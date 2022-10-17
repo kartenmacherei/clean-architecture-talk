@@ -1,5 +1,5 @@
-import UserRepositoryInterface from "../application/UserRepositoryInterface";
 import { Schema, model, connect } from 'mongoose';
+import {UserRepositoryInterface} from "../application/UserRepositoryInterface";
 
 connect('mongodb://mongodb:27017/test');
 

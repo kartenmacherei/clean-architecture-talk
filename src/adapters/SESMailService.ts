@@ -1,21 +1,8 @@
-import {Request, Response} from "express";
-import {DataTypes, Sequelize} from "sequelize";
 import AWS from "aws-sdk";
+import {MailServiceInterface} from "../application/MailServiceInterface";
 
-const sequelize = new Sequelize('sqlite::memory:');
-const User = sequelize.define('User', {
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-});
-
-export default class CreateUserController {
-    public async controller(req: Request, res: Response) {
-        const { email, password} = req.body;
-
-        await User.create({
-            email,
-            password,
-        });
+export class SESMailService implements MailServiceInterface{
+    public async send(email: string) {
 
         const ses = new AWS.SES({
             region: 'eu-central-1',
@@ -44,8 +31,5 @@ export default class CreateUserController {
 
         await ses.sendEmail(params).promise();
 
-        res.json({
-            email
-        })
     }
 }
